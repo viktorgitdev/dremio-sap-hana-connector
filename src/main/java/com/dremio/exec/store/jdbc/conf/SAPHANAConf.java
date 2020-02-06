@@ -49,6 +49,8 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
   
   @NotBlank
   @Tag(2)
+  @Min(1)
+  @Max(65535)
   @DisplayMetadata(label = "Port")
   public String port;
 
@@ -73,8 +75,9 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
     final String username = checkNotNull(this.username, "Missing username.");
     final String password = checkNotNull(this.password, "Missing username.");
     final String port = checkNotNull(this.port, "Missing username.");
+    final int portInt = Integer.parseInt(portAsString);
 
-    return String.format("jdbc:sap://%s:%s", host, port);
+    return String.format("jdbc:sap://%s:%s", host, portInt);
   }
 
   @Override
