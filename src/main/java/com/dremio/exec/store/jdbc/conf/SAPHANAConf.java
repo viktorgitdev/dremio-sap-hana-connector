@@ -29,6 +29,9 @@ import com.dremio.exec.store.jdbc.JdbcStoragePlugin;
 import com.dremio.exec.store.jdbc.JdbcStoragePlugin.Config;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
 import com.google.common.annotations.VisibleForTesting;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import com.dremio.exec.catalog.conf.Secret;
 
 import io.protostuff.Tag;
 
@@ -61,6 +64,7 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
 
   @NotBlank
   @Tag(4)
+  @Secret
   @DisplayMetadata(label = "Password")
   public String password;
 
