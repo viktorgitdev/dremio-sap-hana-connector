@@ -33,21 +33,37 @@ import com.google.common.annotations.VisibleForTesting;
 import io.protostuff.Tag;
 
 /**
- * Configuration for SQLite sources.
+ * Configuration for SAPHANAConf sources.
  */
 @SourceType(value = "SAP-HANA", label = "SAP-HANA")
-public class SqliteConf extends AbstractArpConf<SqliteConf> {
+public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
   private static final String ARP_FILENAME = "arp/implementation/sap-hana-arp.yaml";
   private static final ArpDialect ARP_DIALECT =
       AbstractArpConf.loadArpFile(ARP_FILENAME, (ArpDialect::new));
-  private static final String DRIVER = "org.saphana.JDBC";
+  private static final String DRIVER = "com.sap.cloud.db.jdbc";
 
   @NotBlank
   @Tag(1)
-  @DisplayMetadata(label = "Database")
-  public String database;
-
+  @DisplayMetadata(label = "Host")
+  public String host;
+  
+  @NotBlank
   @Tag(2)
+  @DisplayMetadata(label = "Port")
+  public String port;
+
+  @NotBlank
+  @Tag(3)
+  @DisplayMetadata(label = "Username")
+  public String username;
+
+  @NotBlank
+  @Tag(4)
+  @Secret
+  @DisplayMetadata(label = "Password")
+  public String password;
+
+  @Tag(5)
   @DisplayMetadata(label = "Record fetch size")
   @NotMetadataImpacting
   public int fetchSize = 200;
@@ -56,7 +72,7 @@ public class SqliteConf extends AbstractArpConf<SqliteConf> {
   public String toJdbcConnectionString() {
     final String database = checkNotNull(this.database, "Missing database.");
 
-    return String.format("jdbc:saphana:%s", database);
+    return String.format("jdbc:sap://%s:%s", host, port);
   }
 
   @Override
@@ -73,7 +89,7 @@ public class SqliteConf extends AbstractArpConf<SqliteConf> {
 
   private CloseableDataSource newDataSource() {
     return DataSources.newGenericConnectionPoolDataSource(DRIVER,
-      toJdbcConnectionString(), null, null, null, DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE);
+      toJdbcConnectionString(), username, password, null, DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE);
   }
 
   @Override
