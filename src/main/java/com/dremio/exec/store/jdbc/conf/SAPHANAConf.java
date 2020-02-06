@@ -43,7 +43,7 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
   private static final String ARP_FILENAME = "arp/implementation/sap-hana-arp.yaml";
   private static final ArpDialect ARP_DIALECT =
       AbstractArpConf.loadArpFile(ARP_FILENAME, (ArpDialect::new));
-  private static final String DRIVER = "com.sap.cloud.db.jdbc:ngdbc:RELEASE";
+  private static final String DRIVER = "com.sap.db.jdbc.Driver";
 
   @NotBlank
   @Tag(1)
@@ -77,11 +77,11 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
   public String toJdbcConnectionString() {
     final String host = checkNotNull(this.host, "Missing host.");
     final String username = checkNotNull(this.username, "Missing username.");
-    final String password = checkNotNull(this.password, "Missing username.");
-    final String port = checkNotNull(this.port, "Missing username.");
-    final int portInt = Integer.parseInt(port);
+    final String password = checkNotNull(this.password, "Missing password.");
+    final String port = checkNotNull(this.port, "Missing port.");
+   
 
-    return String.format("jdbc:sap://%s:%s", host, portInt);
+    return String.format("jdbc:sap://%s:%s", host, port);
   }
 
   @Override
