@@ -35,12 +35,12 @@ import io.protostuff.Tag;
 /**
  * Configuration for SQLite sources.
  */
-@SourceType(value = "SQLITE", label = "SQLite")
+@SourceType(value = "SAP-HANA", label = "SAP-HANA")
 public class SqliteConf extends AbstractArpConf<SqliteConf> {
-  private static final String ARP_FILENAME = "arp/implementation/sqlite-arp.yaml";
+  private static final String ARP_FILENAME = "arp/implementation/sap-hana-arp.yaml";
   private static final ArpDialect ARP_DIALECT =
       AbstractArpConf.loadArpFile(ARP_FILENAME, (ArpDialect::new));
-  private static final String DRIVER = "org.sqlite.JDBC";
+  private static final String DRIVER = "org.saphana.JDBC";
 
   @NotBlank
   @Tag(1)
@@ -56,7 +56,7 @@ public class SqliteConf extends AbstractArpConf<SqliteConf> {
   public String toJdbcConnectionString() {
     final String database = checkNotNull(this.database, "Missing database.");
 
-    return String.format("jdbc:sqlite:%s", database);
+    return String.format("jdbc:saphana:%s", database);
   }
 
   @Override
