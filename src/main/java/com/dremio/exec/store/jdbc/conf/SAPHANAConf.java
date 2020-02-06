@@ -79,7 +79,7 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
     final String username = checkNotNull(this.username, "Missing username.");
     final String password = checkNotNull(this.password, "Missing username.");
     final String port = checkNotNull(this.port, "Missing username.");
-    final int portInt = Integer.parseInt(portAsString);
+    final int portInt = Integer.parseInt(port);
 
     return String.format("jdbc:sap://%s:%s", host, portInt);
   }
