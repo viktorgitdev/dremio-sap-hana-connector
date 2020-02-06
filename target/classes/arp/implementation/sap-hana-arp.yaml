@@ -1,0 +1,185 @@
+#
+# Copyright (C) 2017-2018 Dremio Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+metadata:
+  # Manually Configured Metadata Section.
+  name: SAP-HANA
+  apiname: sap-hana
+  spec_version: "1"
+
+syntax:
+  # Manually Configured Syntax Section.
+  identifier_quote: '"'
+  identifier_length_limit: 128
+  allows_boolean_literal: false
+  map_boolean_literal_to_bit: false
+  supports_catalogs: false
+  supports_schemas: false
+
+data_types:
+  mappings:
+    #-------Datetime types-------#
+     - source:
+        name: "DATE"
+      dremio:
+        name: "date"
+      required_cast_arguments: ""
+      - source:
+        name: "TIME"
+      dremio:
+        name: "time"
+      required_cast_arguments: ""
+      - source:    
+        name: "SECONDDATE"
+      dremio:
+        name: "date"
+      required_cast_arguments: ""
+      - source:
+        name: "TIMESTAMP"
+      dremio:
+        name: "timestamp"
+      required_cast_arguments: ""
+
+    #-------Numeric types-------#
+     - source:
+        name: "TINYINT"
+      dremio:
+        name: "integer"
+      required_cast_arguments: ""
+
+    - source:
+        name: "SMALLINT"
+      dremio:
+        name: "integer"
+      required_cast_arguments: ""
+
+    - source:
+        name: "INTEGER"
+      dremio:
+        name: "integer"
+      required_cast_arguments: ""
+
+    - source:
+        name: "BIGINT"
+      dremio:
+        name: "bigint"
+      required_cast_arguments: ""
+
+    - source:
+        name: "SMALLDECIMAL"
+      dremio:
+        name: "double"
+      required_cast_arguments: ""
+
+    - source:
+        name: "DECIMAL"
+      dremio:
+        name: "double"
+      required_cast_arguments: ""
+
+    - source:                
+        name: "REAL"        
+      dremio:
+        name: "double"
+      required_cast_arguments: ""
+
+    - source:
+        name: "DOUBLE"
+      dremio:
+        name: "double"
+      required_cast_arguments: ""
+
+    #-------Boolean type-------#
+    - source:
+        name: "BOOLEAN"
+      dremio:
+        name: "boolean"
+    #-------Character string types-------#
+    - source:
+        name: "VARCHAR"
+      dremio:
+        name: "varchar"
+      required_cast_arguments: ""
+
+    - source:                  
+        name: "NVARCHAR"
+      dremio:
+        name: "varchar"
+      required_cast_arguments: ""
+    
+    - source:
+        name: "ALPHANUM"
+        max_precision: 127
+        literal_length_limit: 127
+      dremio:
+        name: "varchar"
+      required_cast_arguments: ""
+
+    - source:                   
+        name: "SHORTTEXT"
+      dremio:
+        name: "varchar"
+      required_cast_arguments: ""
+    #-------Binary types-------#
+    - source:
+        name: "VARBINARY"
+      dremio:
+        name: "VARBINARY"
+      required_cast_arguments: ""
+
+    #-------Large Object types-------#
+    - source:
+        name: "BLOB"
+      dremio:
+        name: "varchar"
+      required_cast_arguments: ""
+
+    - source:
+        name: "CLOB"
+      dremio:
+        name: "varchar"
+      required_cast_arguments: ""
+
+    - source:
+        name: "NCLOB"
+      dremio:
+        name: "varchar"
+      required_cast_arguments: ""
+    
+    - source:
+        name: "TEXT"
+      dremio:
+        name: "varchar"
+      required_cast_arguments: ""
+    #-------Multi-valued types-------#
+    - source:
+        name: "ARRAY"
+      dremio:
+        name: "list"
+      required_cast_arguments: ""
+    #-------Spatial types-------# 
+    - source:
+        name: "ST_GEOMETRY"
+      dremio:
+        name: "varchar"
+      required_cast_arguments: "" 
+    - source:
+        name: "ST_POINT"
+      dremio:
+        name: "varchar"
+      required_cast_arguments: ""
+
+
