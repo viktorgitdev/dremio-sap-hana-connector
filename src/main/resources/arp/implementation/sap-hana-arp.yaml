@@ -183,3 +183,5 @@ data_types:
       required_cast_arguments: ""
 
 
+# Describe the set of function signatures that are internally supported.
+expressions:
