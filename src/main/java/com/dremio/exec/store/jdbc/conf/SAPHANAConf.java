@@ -13,37 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dremio.exec.store.jdbc.conf;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
-
-import com.dremio.exec.catalog.conf.DisplayMetadata;
-import com.dremio.exec.catalog.conf.NotMetadataImpacting;
-import com.dremio.exec.catalog.conf.SourceType;
-import com.dremio.exec.server.SabotContext;
-import com.dremio.exec.store.jdbc.CloseableDataSource;
-import com.dremio.exec.store.jdbc.DataSources;
-import com.dremio.exec.store.jdbc.JdbcStoragePlugin;
-import com.dremio.exec.store.jdbc.JdbcStoragePlugin.Config;
-import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
-import com.google.common.annotations.VisibleForTesting;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import com.dremio.exec.catalog.conf.Secret;
-
-import io.protostuff.Tag;
+ package com.dremio.exec.store.jdbc.conf;
+ import static com.google.common.base.Preconditions.checkNotNull;
+ import java.util.Properties;
+ import org.apache.log4j.Logger;
+ import javax.validation.constraints.Max;
+ import javax.validation.constraints.Min;
+ import javax.validation.constraints.NotBlank;
+ import com.dremio.exec.catalog.conf.DisplayMetadata;
+ import com.dremio.exec.catalog.conf.NotMetadataImpacting;
+ import com.dremio.exec.catalog.conf.Secret;
+ import com.dremio.exec.catalog.conf.SourceType;
+ import com.dremio.exec.server.SabotContext;
+ import com.dremio.exec.store.jdbc.CloseableDataSource;
+ import com.dremio.exec.store.jdbc.DataSources;
+ import com.dremio.exec.store.jdbc.JdbcStoragePlugin;
+ import com.dremio.exec.store.jdbc.JdbcStoragePlugin.Config;
+ import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
+ import com.google.common.annotations.VisibleForTesting;
+ import com.google.common.base.Strings;
+ import io.protostuff.Tag;
 
 /**
  * Configuration for SAPHANAConf sources.
  */
 @SourceType(value = "SAP-HANA", label = "SAP-HANA")
 public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
+
   private static final String ARP_FILENAME = "arp/implementation/sap-hana-arp.yaml";
   private static final ArpDialect ARP_DIALECT =
       AbstractArpConf.loadArpFile(ARP_FILENAME, (ArpDialect::new));
   private static final String DRIVER = "com.sap.db.jdbc.Driver";
+  private static Logger logger = Logger.getLogger(SnowflakeConf.class);
+  
+  logger.info("init SAP HANA");
 
   @NotBlank
   @Tag(1)
@@ -87,6 +90,7 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
   @Override
   @VisibleForTesting
   public Config toPluginConfig(SabotContext context) {
+    logger.info("Connecting to SAP HANA");
     return JdbcStoragePlugin.Config.newBuilder()
         .withDialect(getDialect())
         .withFetchSize(fetchSize)
