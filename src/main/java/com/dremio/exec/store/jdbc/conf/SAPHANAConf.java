@@ -44,9 +44,9 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
   private static final ArpDialect ARP_DIALECT =
       AbstractArpConf.loadArpFile(ARP_FILENAME, (ArpDialect::new));
   private static final String DRIVER = "com.sap.db.jdbc.Driver";
-  private static Logger logger = Logger.getLogger(SnowflakeConf.class);
+  private static Logger logger = Logger.getLogger(SAPHANAConf.class);
   
-  logger.info("init SAP HANA");
+  
 
   @NotBlank
   @Tag(1)
@@ -82,15 +82,18 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
     final String username = checkNotNull(this.username, "Missing username.");
     final String password = checkNotNull(this.password, "Missing password.");
     final String port = checkNotNull(this.port, "Missing port.");
-   
 
-    return String.format("jdbc:sap://%s:%s", host, port);
+
+    final String connect = String.format("jdbc:sap://%s:%s", host, port);
+    logger.info("url to SAP HANA: " + connect);
+    return connect;
   }
 
   @Override
   @VisibleForTesting
   public Config toPluginConfig(SabotContext context) {
     logger.info("Connecting to SAP HANA");
+
     return JdbcStoragePlugin.Config.newBuilder()
         .withDialect(getDialect())
         .withFetchSize(fetchSize)
@@ -101,6 +104,7 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
   }
 
   private CloseableDataSource newDataSource() {
+    logger.info("NewDataSource to SAP HANA");
     return DataSources.newGenericConnectionPoolDataSource(DRIVER,
       toJdbcConnectionString(), username, password, null, DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE);
   }
