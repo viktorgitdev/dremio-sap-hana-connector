@@ -14,7 +14,15 @@
  * limitations under the License.
  */
  package com.dremio.exec.store.jdbc.conf;
+
  import static com.google.common.base.Preconditions.checkNotNull;
+
+ import java.io.IOException;
+ import java.net.URI;
+ import java.sql.SQLException;
+ import java.util.Properties;
+
+
  import java.util.Properties;
  import org.apache.log4j.Logger;
  import javax.validation.constraints.Max;
@@ -37,7 +45,7 @@
 /**
  * Configuration for SAPHANAConf sources.
  */
-@SourceType(value = "SAP-HANA", label = "SAP-HANA")
+@SourceType(value = "SAP-HANA-2", label = "SAP-HANA-2")
 public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
 
   private static final String ARP_FILENAME = "arp/implementation/sap-hana-arp.yaml";
@@ -93,8 +101,18 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
   @VisibleForTesting
   public Config toPluginConfig(SabotContext context) {
     logger.info("Connecting to SAP HANA");
+    logger.info("ARP_DIALECT: " + ARP_DIALECT);
+    logger.info("DRIVER: " + DRIVER);
+    
+    logger.info("H:" + host);
+    logger.info("P:" + port);
+    logger.info("U:" + username);
+    logger.info("PWD:" + password);
+    logger.info("F:" + fetchSize);
+    
 
-    return JdbcStoragePlugin.Config.newBuilder()
+
+  return JdbcStoragePlugin.Config.newBuilder()
         .withDialect(getDialect())
         .withFetchSize(fetchSize)
         .withDatasourceFactory(this::newDataSource)
