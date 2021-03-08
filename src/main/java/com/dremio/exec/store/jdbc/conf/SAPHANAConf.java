@@ -14,41 +14,32 @@
  * limitations under the License.
  */
  package com.dremio.exec.store.jdbc.conf;
-
- import static com.google.common.base.Preconditions.checkNotNull;
-
- import java.io.IOException;
- import java.net.URI;
- import java.sql.SQLException;
- import java.util.Properties;
-
-
- import java.util.Properties;
- import org.apache.log4j.Logger;
+  import javax.validation.constraints.NotBlank;
+import static com.google.common.base.Preconditions.checkNotNull;
+import com.dremio.exec.store.jdbc.*;
+import com.dremio.options.OptionManager;
+import com.dremio.security.CredentialsService;
+import org.apache.log4j.Logger;
+import com.dremio.exec.catalog.conf.DisplayMetadata;
+import com.dremio.exec.catalog.conf.NotMetadataImpacting;
+import com.dremio.exec.catalog.conf.Secret;
+import com.dremio.exec.catalog.conf.SourceType;
+import com.dremio.exec.store.jdbc.JdbcPluginConfig;
+import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
+import com.dremio.exec.store.jdbc.dialect.arp.ArpYaml;
+import com.google.common.annotations.VisibleForTesting;
+import io.protostuff.Tag;
+import java.util.Properties;
  import javax.validation.constraints.Max;
  import javax.validation.constraints.Min;
- import javax.validation.constraints.NotBlank;
- import com.dremio.exec.catalog.conf.DisplayMetadata;
- import com.dremio.exec.catalog.conf.NotMetadataImpacting;
- import com.dremio.exec.catalog.conf.Secret;
- import com.dremio.exec.catalog.conf.SourceType;
- import com.dremio.exec.server.SabotContext;
- import com.dremio.exec.store.jdbc.CloseableDataSource;
- import com.dremio.exec.store.jdbc.DataSources;
- import com.dremio.exec.store.jdbc.JdbcStoragePlugin;
- import com.dremio.exec.store.jdbc.JdbcStoragePlugin.Config;
- import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
- import com.google.common.annotations.VisibleForTesting;
- import com.google.common.base.Strings;
- import io.protostuff.Tag;
 
 /**
  * Configuration for SAPHANAConf sources.
  */
-@SourceType(value = "SAP-HANA-2", label = "SAP-HANA-2")
+@SourceType(value = "SAPHANA", label = "SAPHANA")
 public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
 
-  private static final String ARP_FILENAME = "arp/implementation/sap-hana-arp.yaml";
+  private static final String ARP_FILENAME = "arp/implementation/SAPHANA-arp.yaml";
   private static final ArpDialect ARP_DIALECT =
       AbstractArpConf.loadArpFile(ARP_FILENAME, (ArpDialect::new));
   private static final String DRIVER = "com.sap.db.jdbc.Driver";
@@ -84,6 +75,15 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
   @NotMetadataImpacting
   public int fetchSize = 200;
 
+  @Tag(6)
+    @DisplayMetadata(label = "Encrypt connection")
+    public boolean useSsl = false;
+  
+  @Tag(7)
+    @NotMetadataImpacting
+    @DisplayMetadata(label = "Grant External Query access (External Query allows creation of VDS from a Snowflake query. Learn more here: https://docs.dremio.com/data-sources/external-queries.html#enabling-external-queries)")
+    public boolean enableExternalQuery = false;
+
   @VisibleForTesting
   public String toJdbcConnectionString() {
     final String host = checkNotNull(this.host, "Missing host.");
@@ -97,34 +97,28 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
     return connect;
   }
 
-  @Override
-  @VisibleForTesting
-  public Config toPluginConfig(SabotContext context) {
-    logger.info("Connecting to SAP HANA");
-    logger.info("ARP_DIALECT: " + ARP_DIALECT);
-    logger.info("DRIVER: " + DRIVER);
-    
-    logger.info("H:" + host);
-    logger.info("P:" + port);
-    logger.info("U:" + username);
-    logger.info("PWD:" + password);
-    logger.info("F:" + fetchSize);
-    
-
-
-  return JdbcStoragePlugin.Config.newBuilder()
-        .withDialect(getDialect())
-        .withFetchSize(fetchSize)
-        .withDatasourceFactory(this::newDataSource)
-        .clearHiddenSchemas()
-        .addHiddenSchema("SYSTEM")
-        .build();
-  }
+    @Override
+    @VisibleForTesting
+    public JdbcPluginConfig buildPluginConfig(
+            JdbcPluginConfig.Builder configBuilder,
+            CredentialsService credentialsService,
+            OptionManager optionManager
+    ){
+        return configBuilder.withDialect(getDialect())
+                .withDatasourceFactory(this::newDataSource)
+                .withAllowExternalQuery(enableExternalQuery)
+                .build();
+    }
 
   private CloseableDataSource newDataSource() {
-    logger.info("NewDataSource to SAP HANA");
+    final Properties properties = new Properties();
+
+        if (useSsl) {
+        properties.setProperty("encrypt", "false");
+        }
+
     return DataSources.newGenericConnectionPoolDataSource(DRIVER,
-      toJdbcConnectionString(), username, password, null, DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE);
+      toJdbcConnectionString(), username, password, properties, DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE);
   }
 
   @Override
