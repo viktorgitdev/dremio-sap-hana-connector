@@ -10,7 +10,6 @@ Dremio delivers lightning fast query speed and a self-service semantic layer ope
 
 ## Usage
 
-### Creating a new IBM SQL Query Source
 
 ### Required Parameters
 
@@ -25,6 +24,6 @@ Dremio delivers lightning fast query speed and a self-service semantic layer ope
 0. Change the pom's dremio.version to suit your Dremio's version.
    `<version.dremio>13.1.0-202102110202430875-3e6f3e7c</version.dremio>`
 1. In root directory with the pom.xml file run `mvn clean install -DskipTests`. If you want to run the tests, add the JDBC jar to your local maven repo along with environment variables that are required. Check the basic test example for more details.
-1. Take the resulting .jar file in the target folder and put it in the <DREMIO_HOME>\jars folder in Dremio
+1. Take the resulting .jar file from the target folder and put it in the <DREMIO_HOME>\jars folder in Dremio
 2. Download the SAPA HANA JDBC driver from ([repo](https://mvnrepository.com/artifact/com.sap.cloud.db.jdbc/ngdbc)) and put in in the <DREMIO_HOME>\jars\3rdparty folder
 3. Restart Dremio
