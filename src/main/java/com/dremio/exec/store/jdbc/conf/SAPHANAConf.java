@@ -114,7 +114,7 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
     final Properties properties = new Properties();
 
         if (useSsl) {
-        properties.setProperty("encrypt", "false");
+        properties.setProperty("sslConnection", "true");
         }
 
     return DataSources.newGenericConnectionPoolDataSource(DRIVER,
