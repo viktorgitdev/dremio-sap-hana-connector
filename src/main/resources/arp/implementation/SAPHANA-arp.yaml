@@ -216,6 +216,37 @@ expressions:
         - "varchar"
         return: "boolean"
     - names:
+      - "="
+      signatures:
+      - args:
+        - "varchar"
+        - "date"
+        return: "boolean"
+        rewrite: "cast({0} as date) = {1}"
+      - args:
+        - "varchar"
+        - "time"
+        return: "boolean"
+      - args:
+        - "varchar"
+        - "timestamp"
+        return: "boolean"
+      - args:
+        - "date"
+        - "varchar"
+        return: "boolean"
+        rewrite: "{0} = cast({1} as date)"
+      - args:
+        - "timestamp"
+        - "varchar"
+        return: "boolean"
+        rewrite: "cast({0} as timestamp) = {1}"
+      - args:
+        - "time"
+        - "varchar"
+        return: "boolean"
+        rewrite: "{0} = cast({1} as time)"
+    - names:
       - ">"
       signatures:
       - args:
