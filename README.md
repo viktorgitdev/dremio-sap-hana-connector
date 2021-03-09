@@ -14,18 +14,16 @@ Dremio delivers lightning fast query speed and a self-service semantic layer ope
 
 ### Required Parameters
 
-Learn about IBM SQL Query JDBC client properties [here](https://cloud.ibm.com/docs/sql-query?topic=sql-query-jdbc)
-
-- JDBC URL
-  - Ex: `jdbc:ibmcloudsql:{instance-crn}?{targetcosurl}`
-- API Key (IBM Cloud IAM API Key)
+- SAP HANA URL
+- USER NAME
+- PASSWORD
 
 ## Development
 
 ## Building and Installation
 
 0. Change the pom's dremio.version to suit your Dremio's version.
-   `<version.dremio> 4.9.1-202010230218060541-2e764ed0</version.dremio>`
+   `<version.dremio>13.1.0-202102110202430875-3e6f3e7c</version.dremio>`
 1. In root directory with the pom.xml file run `mvn clean install -DskipTests`. If you want to run the tests, add the JDBC jar to your local maven repo along with environment variables that are required. Check the basic test example for more details.
 1. Take the resulting .jar file in the target folder and put it in the <DREMIO_HOME>\jars folder in Dremio
 2. Download the SAPA HANA JDBC driver from ([repo](https://mvnrepository.com/artifact/com.sap.cloud.db.jdbc/ngdbc)) and put in in the <DREMIO_HOME>\jars\3rdparty folder
