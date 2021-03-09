@@ -16,8 +16,8 @@
 
 metadata:
   # Manually Configured Metadata Section.
-  name: IBMSQL
-  apiname: IBMSQL
+  name: SAPHANA
+  apiname: SAPHANA
   spec_version: '1'
 
 syntax:
