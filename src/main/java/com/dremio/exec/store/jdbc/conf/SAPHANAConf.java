@@ -73,7 +73,7 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
   @Tag(5)
   @DisplayMetadata(label = "Record fetch size")
   @NotMetadataImpacting
-  public int fetchSize = 200;
+  public int fetchSize = 2000;
 
   @Tag(6)
     @DisplayMetadata(label = "Encrypt connection")
@@ -83,6 +83,17 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
     @NotMetadataImpacting
     @DisplayMetadata(label = "Grant External Query access (External Query allows creation of VDS from a Snowflake query. Learn more here: https://docs.dremio.com/data-sources/external-queries.html#enabling-external-queries)")
     public boolean enableExternalQuery = false;
+
+
+  @Tag(8)
+  @DisplayMetadata(label = "Max idle connections")
+  @NotMetadataImpacting
+  public int maxIdleConns = 10;
+
+  @Tag(9)
+  @DisplayMetadata(label = "Max idle Time in seconds")
+  @NotMetadataImpacting
+  public long idleTimeSec = 600;
 
   @VisibleForTesting
   public String toJdbcConnectionString() {
@@ -117,8 +128,8 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
         properties.setProperty("sslConnection", "true");
         }
 
-    return DataSources.newGenericConnectionPoolDataSource(DRIVER,
-      toJdbcConnectionString(), username, password, properties, DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE);
+      return DataSources.newGenericConnectionPoolDataSource(DRIVER,
+        toJdbcConnectionString(), username, password, properties, DataSources.CommitMode.DRIVER_SPECIFIED_COMMIT_MODE,maxIdleConns,idleTimeSec);
   }
 
   @Override
