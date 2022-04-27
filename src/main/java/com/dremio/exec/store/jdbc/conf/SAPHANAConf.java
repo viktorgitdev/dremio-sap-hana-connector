@@ -81,7 +81,7 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
   
   @Tag(7)
     @NotMetadataImpacting
-    @DisplayMetadata(label = "Grant External Query access (External Query allows creation of VDS from a Snowflake query. Learn more here: https://docs.dremio.com/data-sources/external-queries.html#enabling-external-queries)")
+    @DisplayMetadata(label = "Grant External Query access")
     public boolean enableExternalQuery = false;
 
 
