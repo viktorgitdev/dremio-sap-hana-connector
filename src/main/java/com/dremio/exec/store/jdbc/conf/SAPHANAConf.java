@@ -26,7 +26,6 @@ import com.dremio.exec.catalog.conf.Secret;
 import com.dremio.exec.catalog.conf.SourceType;
 import com.dremio.exec.store.jdbc.JdbcPluginConfig;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
-import com.dremio.exec.store.jdbc.dialect.arp.ArpYaml;
 import com.google.common.annotations.VisibleForTesting;
 import io.protostuff.Tag;
 import java.util.Properties;
@@ -36,7 +35,7 @@ import java.util.Properties;
 /**
  * Configuration for SAPHANAConf sources.
  */
-@SourceType(value = "SAPHANA", label = "SAPHANA")
+@SourceType(value = "SAPHANA", label = "SAPHANA", uiConfig = "dremio-layout.json", externalQuerySupported = true)
 public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
 
   private static final String ARP_FILENAME = "arp/implementation/SAPHANA-arp.yaml";
@@ -78,22 +77,17 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
   @Tag(6)
     @DisplayMetadata(label = "Encrypt connection")
     public boolean useSsl = false;
-  
+
+
   @Tag(7)
-    @NotMetadataImpacting
-    @DisplayMetadata(label = "Grant External Query access")
-    public boolean enableExternalQuery = false;
-
-
-  @Tag(8)
   @DisplayMetadata(label = "Max idle connections")
   @NotMetadataImpacting
   public int maxIdleConns = 10;
 
-  @Tag(9)
+  @Tag(8)
   @DisplayMetadata(label = "Max idle Time in seconds")
   @NotMetadataImpacting
-  public long idleTimeSec = 600;
+  public long idleTimeSec = 60;
 
   @VisibleForTesting
   public String toJdbcConnectionString() {
@@ -117,7 +111,6 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
     ){
         return configBuilder.withDialect(getDialect())
                 .withDatasourceFactory(this::newDataSource)
-                .withAllowExternalQuery(enableExternalQuery)
                 .build();
     }
 
@@ -125,7 +118,7 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
     final Properties properties = new Properties();
 
         if (useSsl) {
-        properties.setProperty("sslConnection", "true");
+        properties.setProperty("encrypt", "true");
         }
 
       return DataSources.newGenericConnectionPoolDataSource(DRIVER,
