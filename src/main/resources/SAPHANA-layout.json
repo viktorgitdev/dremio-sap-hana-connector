@@ -1,0 +1,85 @@
+{
+    "sourceType": "SAPHANAARP",
+    "metadataRefresh": {
+        "datasetDiscovery": true
+    },
+    "form": {
+        "tabs": [
+            {
+                "name": "General",
+                "isGeneral": true,
+                "sections": [
+                    {
+                        "name": "Connection",
+                        "layout": "row",
+                        "elements": [
+                            {
+                                "propName": "config.host",
+                                "validate": {
+                                    "isRequired": true
+                                }
+                            },
+                            {
+                                "propName": "config.port",
+                                "validate": {
+                                    "isRequired": true
+                                }
+                            },
+                            {
+                                "propName": "config.username",
+                                "validate": {
+                                    "isRequired": true
+                                }
+                            },
+                            {
+                                "propName": "config.password",
+                                "validate": {
+                                    "isRequired": true
+                                }
+                            },
+                            {
+                                "propName": "config.useSsl",
+                                "validate": {
+                                    "isRequired": true
+                                }
+                            },
+                            {
+                                "propName": "config.maxIdleConns",
+                                "validate": {
+                                    "isRequired": true
+                                }
+                            },
+                            {
+                                "propName": "config.idleTimeSec",
+                                "validate": {
+                                    "isRequired": true
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Advanced Options",
+                "sections": [
+                    {
+                        "elements": [
+                            {
+                                "propName": "config.fetchSize",
+                                "size": "half",
+                                "tooltip": "Number of records to fetch at once.",
+                                "help": {
+                                    "position": "bottom",
+                                    "text": "Set to 0 to have Dremio automatically decide."
+                                }
+                            },
+                            {
+                                "propName": "config.enableExternalQuery"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

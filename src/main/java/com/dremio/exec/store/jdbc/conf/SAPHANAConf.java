@@ -35,7 +35,7 @@ import java.util.Properties;
 /**
  * Configuration for SAPHANAConf sources.
  */
-@SourceType(value = "SAPHANA", label = "SAPHANA", uiConfig = "dremio-layout.json", externalQuerySupported = true)
+@SourceType(value = "SAPHANA", label = "SAPHANA", uiConfig = "SAPHANA-layout.json", externalQuerySupported = true)
 public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
 
   private static final String ARP_FILENAME = "arp/implementation/SAPHANA-arp.yaml";
