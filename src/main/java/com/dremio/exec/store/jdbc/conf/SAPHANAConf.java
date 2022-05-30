@@ -14,7 +14,8 @@
  * limitations under the License.
  */
  package com.dremio.exec.store.jdbc.conf;
-  import javax.validation.constraints.NotBlank;
+
+import javax.validation.constraints.NotBlank;
 import static com.google.common.base.Preconditions.checkNotNull;
 import com.dremio.exec.store.jdbc.*;
 import com.dremio.options.OptionManager;
@@ -29,8 +30,8 @@ import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
 import com.google.common.annotations.VisibleForTesting;
 import io.protostuff.Tag;
 import java.util.Properties;
- import javax.validation.constraints.Max;
- import javax.validation.constraints.Min;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 /**
  * Configuration for SAPHANAConf sources.
@@ -60,40 +61,40 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
 
   @NotBlank
   @Tag(3)
-  @DisplayMetadata(label = "Username")
+  @DisplayMetadata(label = "username")
   public String username;
 
   @NotBlank
   @Tag(4)
   @Secret
-  @DisplayMetadata(label = "Password")
+  @DisplayMetadata(label = "password")
   public String password;
 
+
   @Tag(5)
-  @DisplayMetadata(label = "Record fetch size")
-  @NotMetadataImpacting
-  public int fetchSize = 2000;
-
-  @Tag(6)
-    @DisplayMetadata(label = "Encrypt connection")
-    public boolean useSsl = false;
-
-
-  @Tag(7)
   @DisplayMetadata(label = "Max idle connections")
   @NotMetadataImpacting
   public int maxIdleConns = 10;
 
-  @Tag(8)
+  @Tag(6)
   @DisplayMetadata(label = "Max idle Time in seconds")
   @NotMetadataImpacting
   public long idleTimeSec = 60;
 
+  @Tag(7)
+  @DisplayMetadata(label = "Record fetch size")
+  @NotMetadataImpacting
+  public int fetchSize = 2000;
+
+    @Tag(8)
+  @DisplayMetadata(label = "Encrypt connection")
+  public boolean useSsl = false;
+
   @VisibleForTesting
   public String toJdbcConnectionString() {
     final String host = checkNotNull(this.host, "Missing host.");
-    final String username = checkNotNull(this.username, "Missing username.");
-    final String password = checkNotNull(this.password, "Missing password.");
+    //final String username = checkNotNull(this.username, "Missing username.");
+    //final String password = checkNotNull(this.password, "Missing password.");
     final String port = checkNotNull(this.port, "Missing port.");
 
 
@@ -109,6 +110,7 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
             CredentialsService credentialsService,
             OptionManager optionManager
     ){
+      logger.info("Connecting to SAP HANA");
         return configBuilder.withDialect(getDialect())
                 .withDatasourceFactory(this::newDataSource)
                 .build();
@@ -116,6 +118,8 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
 
   private CloseableDataSource newDataSource() {
     final Properties properties = new Properties();
+    final String username = checkNotNull(this.username, "Missing username.");
+    final String password = checkNotNull(this.password, "Missing password.");
 
         if (useSsl) {
         properties.setProperty("encrypt", "true");

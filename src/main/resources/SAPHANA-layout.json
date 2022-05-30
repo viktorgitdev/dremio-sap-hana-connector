@@ -1,5 +1,5 @@
 {
-    "sourceType": "SAPHANAARP",
+    "sourceType": "SAPHANA",
     "metadataRefresh": {
         "datasetDiscovery": true
     },
@@ -21,6 +21,7 @@
                             },
                             {
                                 "propName": "config.port",
+                                "size": "third",
                                 "validate": {
                                     "isRequired": true
                                 }
@@ -38,12 +39,6 @@
                                 }
                             },
                             {
-                                "propName": "config.useSsl",
-                                "validate": {
-                                    "isRequired": true
-                                }
-                            },
-                            {
                                 "propName": "config.maxIdleConns",
                                 "validate": {
                                     "isRequired": true
@@ -54,6 +49,9 @@
                                 "validate": {
                                     "isRequired": true
                                 }
+                            },
+                            {
+                                "propName": "config.useSsl"
                             }
                         ]
                     }
@@ -72,9 +70,6 @@
                                     "position": "bottom",
                                     "text": "Set to 0 to have Dremio automatically decide."
                                 }
-                            },
-                            {
-                                "propName": "config.enableExternalQuery"
                             }
                         ]
                     }
