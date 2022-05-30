@@ -1,5 +1,5 @@
 # Dremio SAP HANA ARP  Connector
-<img src="https://www.dremio.com/img/dremio-website.png" width="60"> <img src="./src/main/resources/SAP-HANA.jpg" width="80">
+<img src="./src/main/resources/SAPHANA.svg" width="180">
 
 ## Overview
 This is a community based SAP HANA Dremio connector made using the ARP framework. Check [Dremio Hub](https://github.com/dremio-hub) for more examples and [ARP Docs](https://github.com/dremio-hub/dremio-sqllite-connector#arp-file-format) for documentation.
