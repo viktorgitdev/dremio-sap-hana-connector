@@ -4,12 +4,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.dremio.plugins</groupId>
-  <version>21.2.0</version>
+  <version>24.0.0</version>
   <artifactId>dremio-sap-hana-plugin</artifactId>
   <name>Dremio SAP HANA ARP Connector</name>
 
   <properties>
-    <dremio.version>21.2.0-202205262146080444-038d6d1b</dremio.version>
+    <dremio.version>24.0.0-202302100528110223-3a169b7c</dremio.version>
   </properties>
 
   <dependencies>
