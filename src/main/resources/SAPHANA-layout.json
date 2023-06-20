@@ -27,6 +27,18 @@
                                 }
                             },
                             {
+                                "propName": "config.database",
+                                "validate": {
+                                    "isRequired": true
+                                }
+                            },
+                            {
+                                "propName": "config.currentschema",
+                                "validate": {
+                                    "isRequired": true
+                                }
+                            },
+                            {
                                 "propName": "config.username",
                                 "validate": {
                                     "isRequired": true
@@ -46,6 +58,12 @@
                             },
                             {
                                 "propName": "config.idleTimeSec",
+                                "validate": {
+                                    "isRequired": true
+                                }
+                            },
+                            {
+                                "propName": "config.fetchSize",
                                 "validate": {
                                     "isRequired": true
                                 }

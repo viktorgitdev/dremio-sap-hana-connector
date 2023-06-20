@@ -61,34 +61,47 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
 
   @NotBlank
   @Tag(3)
-  @DisplayMetadata(label = "username")
-  public String username;
+  @DisplayMetadata(label = "database")
+  public String database;
 
   @NotBlank
   @Tag(4)
+  @DisplayMetadata(label = "username")
+  public String username;
+
+
+  @NotBlank
+  @Tag(5)
   @Secret
   @DisplayMetadata(label = "password")
   public String password;
 
 
-  @Tag(5)
+  @Tag(6)
   @DisplayMetadata(label = "Max idle connections")
   @NotMetadataImpacting
   public int maxIdleConns = 10;
 
-  @Tag(6)
+  @Tag(7)
   @DisplayMetadata(label = "Max idle Time in seconds")
   @NotMetadataImpacting
   public long idleTimeSec = 60;
 
-  @Tag(7)
+  @Tag(8)
   @DisplayMetadata(label = "Record fetch size")
   @NotMetadataImpacting
   public int fetchSize = 2000;
 
-    @Tag(8)
+  @Tag(9)
   @DisplayMetadata(label = "Encrypt connection")
   public boolean useSsl = false;
+
+
+  @Tag(10)
+  @DisplayMetadata(label = "currentschema")
+  public String currentschema;
+
+  
 
   @VisibleForTesting
   public String toJdbcConnectionString() {
@@ -98,7 +111,7 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
     final String port = checkNotNull(this.port, "Missing port.");
 
 
-    final String connect = String.format("jdbc:sap://%s:%s", host, port);
+    final String connect = String.format("jdbc:sap://%s:%s/?databaseName=%s&currentschema=%s", host, port, database, currentschema);
     logger.info("url to SAP HANA: " + connect);
     return connect;
   }
