@@ -111,7 +111,7 @@ public class SAPHANAConf extends AbstractArpConf<SAPHANAConf> {
     final String port = checkNotNull(this.port, "Missing port.");
 
 
-    final String connect = String.format("jdbc:sap://%s:%s/?databaseName=%s&currentschema=%s", host, port, database, currentschema);
+    final String connect = String.format("jdbc:sap://%s:%s/?databaseName=%s&currentSchema=%s", host, port, database, currentschema);
     logger.info("url to SAP HANA: " + connect);
     return connect;
   }

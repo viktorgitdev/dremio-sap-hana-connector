@@ -26,7 +26,7 @@ syntax:
   allows_boolean_literal: false
   map_boolean_literal_to_bit: false
   supports_catalogs: false
-  supports_schemas: false
+  supports_schemas: true
 
 data_types:
   mappings:
